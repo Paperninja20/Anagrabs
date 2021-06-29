@@ -13,12 +13,12 @@ func addWord(tileArray):
 	#	currentX = 80
 	for tile in tileArray:
 		var tween = tile.get_node("Tween")
-		print(str(tile.position.x) + " is old pos")
-		print(str(tile.position.y) + " is old pos")
+		#print(str(tile.position.x) + " is old pos")
+		#print(str(tile.position.y) + " is old pos")
 		tween.interpolate_property(tile, "position", Vector2(tile.position.x, tile.position.y), Vector2(currentX, currentY), 1, Tween.TRANS_LINEAR, Tween.EASE_IN)
 		tween.start()
-		print(str(tile.position.x) + " is new pos")
-		print(str(tile.position.y) + " is new pos")
+		#print(str(tile.position.x) + " is new pos")
+		#print(str(tile.position.y) + " is new pos")
 		currentX += 40
 	currentX = 0
 	currentY = 0

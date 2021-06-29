@@ -7,7 +7,9 @@ extends Node2D
 var originPoint = [960, 440]
 var lettersInPlay = []
 var wordsInPlay = []
-var tileSlots = {
+
+#8 tiles
+"""var tileSlots = {
 	[originPoint[0]      , originPoint[1] - 100]: null,
 	[originPoint[0] + 75 , originPoint[1] - 75 ]: null,
 	[originPoint[0] + 100, originPoint[1]      ]: null,
@@ -16,6 +18,16 @@ var tileSlots = {
 	[originPoint[0] - 75 , originPoint[1] + 75 ]: null,
 	[originPoint[0] - 100, originPoint[1]      ]: null,
 	[originPoint[0] - 75 , originPoint[1] - 75] : null,
+}"""
+
+#6 tiles
+var tileSlots = {
+	[originPoint[0]      , originPoint[1] - 100]: null,
+	[originPoint[0] + 86 , originPoint[1] - 50 ]: null,
+	[originPoint[0] + 86 , originPoint[1] + 50 ]: null,
+	[originPoint[0]      , originPoint[1] + 100]: null,
+	[originPoint[0] - 86 , originPoint[1] + 50 ]: null,
+	[originPoint[0] - 86 , originPoint[1] - 50] : null,
 }
 # Called when the node enters the scene tree for the first time.
 func _ready():

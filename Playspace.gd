@@ -44,7 +44,7 @@ func _on_TextureButton_pressed():
 				count += 1
 				continue
 			firstKey = key
-			if currentOverrideTile < 8:
+			if currentOverrideTile < 6:
 				currentOverrideTile += 1
 			else:
 				currentOverrideTile = 1
@@ -59,6 +59,11 @@ func _on_TextureButton_pressed():
 	$Board.lettersInPlay.append(newTile.tileLetter)
 	#print($Board.lettersInPlay)
 	$Board.add_child(newTile)
+	var lettersOut = []
+	for tile in $Board.get_children():
+		lettersOut.append(tile.tileLetter)
+	for word in $PlayerWords.get_children():
+		word.calculateNextPlays(lettersOut, scrabbleWords)
 	
 	pass # Replace with function body.
 	
@@ -178,24 +183,25 @@ func _on_LineEdit_text_entered(new_text):
 		var globalPos = []
 		for tile in tilesOnBoard:
 			globalPos.append(tile.get_global_position())
-			print(tile.position.x, "is relative x pre re parent")
-			print(tile.position.y, "is relative y pre re parent")
+			#print(tile.position.x, "is relative x pre re parent")
+			#print(tile.position.y, "is relative y pre re parent")
 			tile.get_parent().remove_child(tile)
 			$Board.removeTile(tile)
+			$Board.lettersInPlay.remove(tile.tileLetter)
 			newWord.add_child(tile)
-			print(tile.get_parent().word, "is parent")
-			print(tile.position.x, "is relative x post re parent")
-			print(tile.position.y, "is relative x post re parent")
+			#print(tile.get_parent().word, "is parent")
+			#print(tile.position.x, "is relative x post re parent")
+			#print(tile.position.y, "is relative x post re parent")
 
 		
 		$PlayerWords.add_child(newWord)
 		$PlayerWords.arrangeWords()
 		for tile in tilesOnBoard:
-			print(globalPos[0])
+			#print(globalPos[0])
 			tile.global_position = globalPos.pop_front()	
 		$PlayerWords.addWord(tilesOnBoard)
-		for tile in tilesOnBoard:
-			print(tile.get_global_position())
+		#for tile in tilesOnBoard:
+			#print(tile.get_global_position())
 
 		
 	pass # Replace with function body.
