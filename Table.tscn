@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Assets/bag.png" type="Texture" id=1]
+[ext_resource path="res://WordBag.gd" type="Script" id=2]
+[ext_resource path="res://Playspace.gd" type="Script" id=3]
+[ext_resource path="res://Board.gd" type="Script" id=4]
+[ext_resource path="res://PlayerWords.gd" type="Script" id=5]
+[ext_resource path="res://ComputerWords.gd" type="Script" id=6]
+
+[node name="Playspace" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="WordBag" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="TextureButton" type="TextureButton" parent="WordBag"]
+margin_left = 898.653
+margin_top = 389.318
+margin_right = 1154.65
+margin_bottom = 645.318
+rect_scale = Vector2( 0.4, 0.4 )
+texture_normal = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Board" type="Node2D" parent="."]
+script = ExtResource( 4 )
+
+[node name="ComputerWords" type="Node2D" parent="."]
+script = ExtResource( 6 )
+
+[node name="PlayerWords" type="Node2D" parent="."]
+script = ExtResource( 5 )
+
+[node name="LineEdit" type="LineEdit" parent="."]
+margin_left = 702.04
+margin_top = 970.3
+margin_right = 1239.04
+margin_bottom = 994.3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="WordBag/TextureButton" to="." method="_on_TextureButton_pressed"]
+[connection signal="text_entered" from="LineEdit" to="." method="_on_LineEdit_text_entered"]
