@@ -15,7 +15,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="PirateScrabble"
+config/name="Anagrabs!"
 run/main_scene="res://Table.tscn"
 config/icon="res://icon.png"
 
