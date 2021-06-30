@@ -30,7 +30,8 @@ script = ExtResource( 4 )
 [node name="ComputerWords" type="Node2D" parent="."]
 script = ExtResource( 6 )
 
-[node name="Timer" type="Timer" parent="ComputerWords"]
+[node name="CalculationTimer" type="Timer" parent="ComputerWords"]
+wait_time = 5.0
 autostart = true
 
 [node name="PlayerWords" type="Node2D" parent="."]
@@ -44,6 +45,10 @@ margin_bottom = 994.3
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="pressed" from="WordBag/TextureButton" to="." method="_on_TextureButton_pressed"]
-[connection signal="timeout" from="ComputerWords/Timer" to="ComputerWords" method="_on_Timer_timeout"]
+
+[node name="PluckTileTimer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+[connection signal="timeout" from="ComputerWords/CalculationTimer" to="ComputerWords" method="_on_Timer_timeout"]
 [connection signal="text_entered" from="LineEdit" to="." method="_on_LineEdit_text_entered"]
+[connection signal="timeout" from="PluckTileTimer" to="." method="_on_PluckTileTimer_timeout"]

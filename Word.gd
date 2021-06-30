@@ -22,12 +22,14 @@ func calculateNextPlays(tilesInPlay, scrabbleWords):
 	
 	for i in range(1<<(tilesInPlay.size() + 1) - 1):
 		subset = dec2binArray((1<<(tilesInPlay.size() + 1) - 1) - (i + 1), tilesInPlay.size())
-		if subset == []:
-			break
+		if subset.empty():
+			continue
 		var wordToCheck = lettersOfWord.duplicate(true)
 		for k in range(subset.size()):
 			if subset[k] == 1:
 				wordToCheck.append(tilesInPlay[k])
+		if wordToCheck.size() == word.length():
+			continue
 		wordToCheck.sort()
 		var stringOfWord = ""
 		for character in wordToCheck:

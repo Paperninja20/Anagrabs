@@ -30,7 +30,7 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func _on_TextureButton_pressed():
+func _on_PluckTileTimer_timeout():
 	if $WordBag.letterBag.empty():
 		print("no more tiles!")
 		return
@@ -64,6 +64,12 @@ func _on_TextureButton_pressed():
 		lettersOut.append(tile.tileLetter)
 	for word in $PlayerWords.get_children():
 		word.calculateNextPlays(lettersOut, scrabbleWords)
+	for word in $ComputerWords.get_children():
+		if word is Timer:
+			continue
+		word.calculateNextPlays(lettersOut, scrabbleWords)
+	
+	$ComputerWords.calculatePlays()
 	
 	pass # Replace with function body.
 	
@@ -180,28 +186,19 @@ func _on_LineEdit_text_entered(new_text):
 		var newWord = word.instance()
 		newWord.word = new_text
 		
-		var globalPos = []
 		for tile in tilesOnBoard:
-			globalPos.append(tile.get_global_position())
-			#print(tile.position.x, "is relative x pre re parent")
-			#print(tile.position.y, "is relative y pre re parent")
 			tile.get_parent().remove_child(tile)
 			$Board.removeTile(tile)
 			$Board.lettersInPlay.remove(tile.tileLetter)
 			newWord.add_child(tile)
-			#print(tile.get_parent().word, "is parent")
-			#print(tile.position.x, "is relative x post re parent")
-			#print(tile.position.y, "is relative x post re parent")
 
 		
 		$PlayerWords.add_child(newWord)
 		$PlayerWords.arrangeWords()
-		for tile in tilesOnBoard:
-			#print(globalPos[0])
-			tile.global_position = globalPos.pop_front()	
 		$PlayerWords.addWord(tilesOnBoard)
 		#for tile in tilesOnBoard:
 			#print(tile.get_global_position())
 
 		
 	pass # Replace with function body.
+
