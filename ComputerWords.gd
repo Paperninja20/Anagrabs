@@ -23,7 +23,9 @@ func _ready():
 
 
 func _on_Timer_timeout():
-	makePlay()
+	var diceRoll = randi()%3 + 1
+	if diceRoll == 3:
+		makePlay()
 	pass # Replace with function body.
 
 

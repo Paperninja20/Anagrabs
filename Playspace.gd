@@ -109,7 +109,7 @@ func checkWordonBoard(word):
 	print("word can be formed")
 	return result
 	
-func checkForSteals(wordToBeChecked):
+func checkForTransforms(wordToBeChecked):
 	var result = []
 	var tempresult = []
 	var wordToCheck = []
@@ -141,7 +141,41 @@ func checkForSteals(wordToBeChecked):
 				break
 				
 	return result
+
+func checkForSteals(wordToBeChecked):
+	var result = []
+	var tempresult = []
+	var wordToCheck = []
+	for character in wordToBeChecked.to_upper():
+		wordToCheck.append(character)
 	
+	for computerWord in $ComputerWords.get_children():
+		if computerWord is Timer:
+			continue
+		var computerWordArray = []
+		for character in computerWord.word.to_upper():
+			computerWordArray.append(character)
+		
+		var remainingString = checkSubarray(computerWordArray, wordToCheck)
+		if remainingString == "":
+			continue
+		tempresult = checkWordonBoard(remainingString)
+		if tempresult.empty():
+			continue
+		for tile in computerWord.get_children():
+			tempresult.append(tile)
+		computerWord.get_parent().remove_child(computerWord)
+		break
+		
+	print(wordToBeChecked.to_upper())
+	for character in wordToBeChecked.to_upper():
+		for tile in tempresult:
+			if tile.tileLetter == character:
+				result.append(tile)
+				tempresult.erase(tile)
+				break
+				
+	return result
 		
 func checkSubarray(subarray, array):
 	var subarrayCopy = subarray.duplicate(true)
@@ -179,6 +213,8 @@ func _on_LineEdit_text_entered(new_text):
 		print('not a valid word')
 	else:
 		var tilesOnBoard = checkForSteals(new_text)
+		if tilesOnBoard.empty():
+			tilesOnBoard = checkForTransforms(new_text)
 		if tilesOnBoard.empty():
 			tilesOnBoard = checkWordonBoard(new_text)
 		if tilesOnBoard.empty():
