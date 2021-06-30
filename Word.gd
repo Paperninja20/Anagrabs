@@ -18,9 +18,10 @@ func _ready():
 func calculateNextPlays(tilesInPlay, scrabbleWords):
 	possibleNextPlays.clear()
 	
-	var subset = dec2binArray(1<<tilesInPlay.size() - 1, tilesInPlay.size())
+	var subset
 	
-	for i in range(1<<tilesInPlay.size() - 1):
+	for i in range(1<<(tilesInPlay.size() + 1) - 1):
+		subset = dec2binArray((1<<(tilesInPlay.size() + 1) - 1) - (i + 1), tilesInPlay.size())
 		if subset == []:
 			break
 		var wordToCheck = lettersOfWord.duplicate(true)
@@ -34,7 +35,8 @@ func calculateNextPlays(tilesInPlay, scrabbleWords):
 		if scrabbleWords.has(stringOfWord):
 			if not scrabbleWords[stringOfWord][0] in possibleNextPlays:
 				possibleNextPlays += scrabbleWords[stringOfWord]
-		subset = dec2binArray((1<<tilesInPlay.size() - 1) - (i + 1), tilesInPlay.size())
+		subset = dec2binArray((1<<(tilesInPlay.size() + 1) - 1) - (i + 1), tilesInPlay.size())
+		
 				
 	#for i in range(tilesOnBoard.size()):
 		
