@@ -19,22 +19,25 @@ func addWord(tileArray):
 		tween.start()
 		#print(str(tile.position.x) + " is new pos")
 		#print(str(tile.position.y) + " is new pos")
-		currentX += 40
+		currentX += 50
 	currentX = 0
 	currentY = 0
 		
 		
 
 func arrangeWords():
-	var currX = 80
-	var currY = 680
+	var currX = 50
+	var currY = 700
 	for word in self.get_children():
-		if (word.word.length() * 40 + currX > 1920):
-			currY += 80
-			currX = 80
+		if (word.word.length() * 50 + currX > 1920):
+			currY += 75
+			if currX == 50:
+				currX = 100
+			else:
+				currX = 50
 		word.position.x = currX
 		word.position.y = currY
-		currX += (word.word.length() * 40) + 60
+		currX += (word.word.length() * 50) + 70
 		#lastOffset = (word.word.length() * 40) + 60
 		
 		

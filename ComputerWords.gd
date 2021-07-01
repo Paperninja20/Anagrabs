@@ -80,7 +80,9 @@ func makePlay():
 	var play
 	var tileArray = []
 	var tileArraySorted = []
+	var stolen = false
 	if !possibleStealPlays.empty():
+		stolen = true
 		print('stealing')
 		play = possibleStealPlays.keys()[rand_range(0, possibleStealPlays.size() - 1)]
 		print(play)
@@ -187,6 +189,8 @@ func makePlay():
 	add_child(newWord)
 	arrangeWords()
 	addWord(tileArraySorted)
+	if stolen:
+		get_node("../PlayerWords").arrangeWords()
 	calculatePlays()
 	
 func addWord(tileArray):
@@ -201,22 +205,27 @@ func addWord(tileArray):
 		tween.start()
 		#print(str(tile.position.x) + " is new pos")
 		#print(str(tile.position.y) + " is new pos")
-		currentX += 40
+		currentX += 50
 	currentX = 0
 	currentY = 0
 	
 func arrangeWords():
-	var currX = 80
-	var currY = 80
+	var startX = 50
+	var currX = 50
+	var currY = 50
 	for word in self.get_children():
 		if word is Timer:
 			continue
-		if (word.word.length() * 40 + currX > 1920):
-			currY += 80
-			currX = 80
+		if (word.word.length() * 50 + currX > 1920):
+			currY += 75
+			if startX == 50:
+				startX = 100
+			else:
+				startX = 50
+			currX = startX
 		word.position.x = currX
 		word.position.y = currY
-		currX += (word.word.length() * 40) + 60
+		currX += (word.word.length() * 50) + 70
 	
 func dec2binArray(num, length):
 	var result = []

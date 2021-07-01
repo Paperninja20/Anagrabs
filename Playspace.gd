@@ -196,6 +196,7 @@ func checkSubarray(subarray, array):
 			
 
 func _on_LineEdit_text_entered(new_text):
+	var stolen = true
 	print(new_text)
 	$LineEdit.text = ''
 	
@@ -214,6 +215,7 @@ func _on_LineEdit_text_entered(new_text):
 	else:
 		var tilesOnBoard = checkForSteals(new_text)
 		if tilesOnBoard.empty():
+			stolen = false
 			tilesOnBoard = checkForTransforms(new_text)
 		if tilesOnBoard.empty():
 			tilesOnBoard = checkWordonBoard(new_text)
@@ -232,6 +234,8 @@ func _on_LineEdit_text_entered(new_text):
 		$PlayerWords.add_child(newWord)
 		$PlayerWords.arrangeWords()
 		$PlayerWords.addWord(tilesOnBoard)
+		if stolen:
+			$ComputerWords.arrangeWords()
 		#for tile in tilesOnBoard:
 			#print(tile.get_global_position())
 
