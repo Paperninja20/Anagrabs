@@ -3,11 +3,15 @@ extends Node2D
 var word
 var lettersOfWord = []
 var possibleNextPlays = []
+var widthToSubtract
+var heightToSubtract
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	widthToSubtract = ((word.length() * 150) - (word.length() * 50))/2
+	heightToSubtract = 50
 	for character in word.to_upper():
 		lettersOfWord.append(character)
 	pass # Replace with function body.
@@ -56,3 +60,11 @@ func dec2binArray(num, length):
 		result.push_front(0)
 	return result
 	
+
+
+func _on_Tween_tween_all_completed():
+	for tile in get_children():
+		if tile is Tween:
+			continue
+		tile.globalPos = tile.global_position
+	pass # Replace with function body.

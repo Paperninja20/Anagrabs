@@ -8,6 +8,7 @@ var possibleTilePlays = []
 var possibleStealPlays = {}
 var possibleTransformPlays = {}
 
+var animationSpeed = 0.5
 var currentX = 0
 var currentY = 0
 
@@ -24,6 +25,7 @@ func _ready():
 
 func _on_Timer_timeout():
 	var diceRoll = randi()%3 + 1
+	print(diceRoll)
 	if diceRoll == 3:
 		makePlay()
 	pass # Replace with function body.
@@ -81,109 +83,129 @@ func makePlay():
 	var tileArray = []
 	var tileArraySorted = []
 	var stolen = false
-	if !possibleStealPlays.empty():
-		stolen = true
-		print('stealing')
-		play = possibleStealPlays.keys()[rand_range(0, possibleStealPlays.size() - 1)]
-		print(play)
-		var copyOfPlay = play
-		possibleStealPlays[play].get_parent().remove_child(possibleStealPlays[play])
-		#instance new word and add it to computerwords as a child
-		for tile in possibleStealPlays[play].get_children():
-			tileArray.append(tile)
-			
-		for character in possibleStealPlays[play].word:
-			play.erase(play.find(character), 1)
-			
-		for tile in get_node("../Board").get_children():
-			if tile.tileLetter in play:
-				play.erase(play.find(tile.tileLetter), 1)
-				tileArray.append(tile)
-			
-		newWord = word.instance()
-		newWord.word = copyOfPlay
-		
-		for character in copyOfPlay:
-			for tile in tileArray:
-				if tile.tileLetter == character:
-					tileArraySorted.append(tile)
-					tileArray.erase(tile)
-					break
-		
-		for tile in tileArraySorted:
-			tile.get_parent().remove_child(tile)
-			get_node("../Board").removeTile(tile)
-			get_node("../Board").lettersInPlay.remove(tile.tileLetter)
-			newWord.add_child(tile)
+	var weightedDice = [1,2,2,3,3,3,3,3,3,3]
+	var playType = weightedDice[rand_range(0, weightedDice.size() - 1)]
+	
+	match playType:
+		1:
+			print('stealing')
+			if !possibleStealPlays.empty():
+				stolen = true
+				play = possibleStealPlays.keys()[rand_range(0, possibleStealPlays.size() - 1)]
+				print(play)
+				var copyOfPlay = play
+				possibleStealPlays[play].get_parent().remove_child(possibleStealPlays[play])
+				#instance new word and add it to computerwords as a child
+				for tile in possibleStealPlays[play].get_children():
+					if tile is Tween:
+						continue
+					tileArray.append(tile)
+					
+				for character in possibleStealPlays[play].word:
+					play.erase(play.find(character), 1)
+					
+				for tile in get_node("../Board").get_children():
+					if tile.tileLetter in play:
+						play.erase(play.find(tile.tileLetter), 1)
+						tileArray.append(tile)
+					
+				newWord = word.instance()
+				newWord.word = copyOfPlay
+				newWord.position.x = 960 - (copyOfPlay.length() * 25) + 25
+				newWord.position.y = 540
+				
+				for character in copyOfPlay:
+					for tile in tileArray:
+						if tile.tileLetter == character:
+							tileArraySorted.append(tile)
+							tileArray.erase(tile)
+							break
+				
+				for tile in tileArraySorted:
+					tile.get_parent().remove_child(tile)
+					get_node("../Board").removeTile(tile)
+					get_node("../Board").lettersInPlay.remove(tile.tileLetter)
+					newWord.add_child(tile)
+			else:
+				return
 	
 		
-	elif !possibleTransformPlays.empty():
-		print('transforming')
-		
-		play = possibleTransformPlays.keys()[rand_range(0, possibleTransformPlays.size() - 1)]
-		var copyOfPlay = play
-		possibleTransformPlays[play].get_parent().remove_child(possibleTransformPlays[play])
-		#instance new word and add it to computerwords as a child
-		for tile in possibleTransformPlays[play].get_children():
-			tileArray.append(tile)
-			
-		for character in possibleTransformPlays[play].word:
-			play.erase(play.find(character), 1)
-			
-		for tile in get_node("../Board").get_children():
-			if tile.tileLetter in play:
-				play.erase(play.find(tile.tileLetter), 1)
-				tileArray.append(tile)
-			
-		newWord = word.instance()
-		newWord.word = copyOfPlay
-		
-		for character in copyOfPlay:
-			for tile in tileArray:
-				if tile.tileLetter == character:
-					tileArraySorted.append(tile)
-					tileArray.erase(tile)
-					break
-		
-		for tile in tileArraySorted:
-			tile.get_parent().remove_child(tile)
-			get_node("../Board").removeTile(tile)
-			get_node("../Board").lettersInPlay.remove(tile.tileLetter)
-			newWord.add_child(tile)
-		
-		
-	elif !possibleTilePlays.empty():
-		print('normal')
-		
-		play = possibleTilePlays[rand_range(0, possibleTilePlays.size() - 1)]
-		var copyOfPlay = play
-		for tile in get_node("../Board").get_children():
-			for character in copyOfPlay:
-				if tile.tileLetter == character:
+		2:
+			print('transforming')
+			if !possibleTransformPlays.empty():
+				
+				play = possibleTransformPlays.keys()[rand_range(0, possibleTransformPlays.size() - 1)]
+				var copyOfPlay = play
+				possibleTransformPlays[play].get_parent().remove_child(possibleTransformPlays[play])
+				#instance new word and add it to computerwords as a child
+				for tile in possibleTransformPlays[play].get_children():
+					if tile is Tween:
+						continue
 					tileArray.append(tile)
-					copyOfPlay.erase(copyOfPlay.find(character), 1)
-					break
 					
-		newWord = word.instance()
-		newWord.word = play
-		
-		for character in play:
-			for tile in tileArray:
-				if tile.tileLetter == character:
-					tileArraySorted.append(tile)
-					tileArray.erase(tile)
-					break
+				for character in possibleTransformPlays[play].word:
+					play.erase(play.find(character), 1)
 					
-		for tile in tileArraySorted:
-			tile.get_parent().remove_child(tile)
-			get_node("../Board").removeTile(tile)
-			get_node("../Board").lettersInPlay.remove(tile.tileLetter)
-			newWord.add_child(tile)
+				for tile in get_node("../Board").get_children():
+					if tile.tileLetter in play:
+						play.erase(play.find(tile.tileLetter), 1)
+						tileArray.append(tile)
+					
+				newWord = word.instance()
+				newWord.word = copyOfPlay
+				newWord.position.x = 960 - (copyOfPlay.length() * 25) + 25
+				newWord.position.y = 540
+				
+				for character in copyOfPlay:
+					for tile in tileArray:
+						if tile.tileLetter == character:
+							tileArraySorted.append(tile)
+							tileArray.erase(tile)
+							break
+				
+				for tile in tileArraySorted:
+					tile.get_parent().remove_child(tile)
+					get_node("../Board").removeTile(tile)
+					get_node("../Board").lettersInPlay.remove(tile.tileLetter)
+					newWord.add_child(tile)
+			else:
+				return
 		
 		
-	else:
-		print('none')
-		return
+		3:
+			print('normal')
+			if !possibleTilePlays.empty():
+				
+				play = possibleTilePlays[rand_range(0, possibleTilePlays.size() - 1)]
+				var copyOfPlay = play
+				for tile in get_node("../Board").get_children():
+					for character in copyOfPlay:
+						if tile.tileLetter == character:
+							tileArray.append(tile)
+							copyOfPlay.erase(copyOfPlay.find(character), 1)
+							break
+							
+				newWord = word.instance()
+				newWord.word = play
+				newWord.position.x = 960 - (play.length() * 25) + 25
+				newWord.position.y = 540
+				
+				for character in play:
+					for tile in tileArray:
+						if tile.tileLetter == character:
+							tileArraySorted.append(tile)
+							tileArray.erase(tile)
+							break
+							
+				for tile in tileArraySorted:
+					tile.get_parent().remove_child(tile)
+					get_node("../Board").removeTile(tile)
+					get_node("../Board").lettersInPlay.remove(tile.tileLetter)
+					newWord.add_child(tile)
+			else:
+				return
+		
+		
 	
 	print(newWord.word, " is play")
 	add_child(newWord)
@@ -194,28 +216,35 @@ func makePlay():
 	calculatePlays()
 	
 func addWord(tileArray):
-	#if (tileArray.size() * 40) + currentX > 1920:
-	#	currentY += 60
-	#	currentX = 80
+
 	for tile in tileArray:
 		var tween = tile.get_node("Tween")
-		#print(str(tile.position.x) + " is old pos")
-		#print(str(tile.position.y) + " is old pos")
-		tween.interpolate_property(tile, "position", Vector2(tile.position.x, tile.position.y), Vector2(currentX, currentY), 1, Tween.TRANS_LINEAR, Tween.EASE_IN)
+
+		tween.interpolate_property(tile, "position", tile.globalPos - tile.get_parent().position, Vector2(currentX, currentY), animationSpeed, Tween.TRANS_QUAD, Tween.EASE_IN)
+		tween.interpolate_property(tile.get_parent(), "scale", Vector2(1, 1), Vector2(3, 3), animationSpeed, Tween.TRANS_QUAD, Tween.EASE_IN)
+		tween.interpolate_property(tile.get_parent(), "position", tile.get_parent().position, 
+			tile.get_parent().position - Vector2((tile.get_parent().widthToSubtract), (tile.get_parent().heightToSubtract)), animationSpeed, Tween.TRANS_QUAD, Tween.EASE_IN)
 		tween.start()
-		#print(str(tile.position.x) + " is new pos")
-		#print(str(tile.position.y) + " is new pos")
+
 		currentX += 50
 	currentX = 0
 	currentY = 0
+	
+	get_node("../AnimationTimerComputer").wait_time = animationSpeed + 0.1
+	get_node("../AnimationTimerComputer").start()
 	
 func arrangeWords():
 	var startX = 50
 	var currX = 50
 	var currY = 50
+	var tweenArray = []
 	for word in self.get_children():
 		if word is Timer:
 			continue
+		if word.scale.x > 1 or word.scale.y > 1:
+			var tween = word.get_node("Tween")
+			tween.interpolate_property(word, "scale", word.scale, Vector2(1, 1), animationSpeed, Tween.TRANS_LINEAR, Tween.EASE_IN)
+			tweenArray.push_front(tween)
 		if (word.word.length() * 50 + currX > 1920):
 			currY += 75
 			if startX == 50:
@@ -223,9 +252,13 @@ func arrangeWords():
 			else:
 				startX = 50
 			currX = startX
-		word.position.x = currX
-		word.position.y = currY
+		var tween = word.get_node("Tween")
+		tween.interpolate_property(word, "position", Vector2(word.position.x, word.position.y), Vector2(currX, currY), animationSpeed, Tween.TRANS_LINEAR, Tween.EASE_IN)
+		tweenArray.push_front(tween)
 		currX += (word.word.length() * 50) + 70
+	
+	for element in tweenArray:
+		element.start()
 	
 func dec2binArray(num, length):
 	var result = []
@@ -237,4 +270,6 @@ func dec2binArray(num, length):
 	return result
 	
 	
-	
+func _on_AnimationTimerComputer_timeout():
+	arrangeWords()
+	pass # Replace with function body.

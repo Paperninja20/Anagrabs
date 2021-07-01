@@ -9,6 +9,7 @@ var mouseHover = false
 var dragging = false
 var offsetX
 var offsetY
+var globalPos
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Letter.text = tileLetter
@@ -42,3 +43,8 @@ func _on_Area2D_mouse_exited():
 		mouseHover = false
 
 
+
+
+func _on_Tween_tween_all_completed():
+	globalPos = global_position
+	pass # Replace with function body.

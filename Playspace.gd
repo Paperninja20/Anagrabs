@@ -99,14 +99,12 @@ func checkWordonBoard(word):
 				
 	for key in wordDict:
 		if wordDict[key] != 0:
-			print("word cannot be formed")
 			return []
 	for character in wordToCheck:
 		for tile in tempresult:
 			if tile.tileLetter == character:
 				result.append(tile)
 				tempresult.erase(tile)
-	print("word can be formed")
 	return result
 	
 func checkForTransforms(wordToBeChecked):
@@ -117,6 +115,8 @@ func checkForTransforms(wordToBeChecked):
 		wordToCheck.append(character)
 	
 	for playerWord in $PlayerWords.get_children():
+		if playerWord.word.length() >= wordToBeChecked.length():
+			continue
 		var playerWordArray = []
 		for character in playerWord.word.to_upper():
 			playerWordArray.append(character)
@@ -128,6 +128,8 @@ func checkForTransforms(wordToBeChecked):
 		if tempresult.empty():
 			continue
 		for tile in playerWord.get_children():
+			if tile is Tween:
+				continue
 			tempresult.append(tile)
 		playerWord.get_parent().remove_child(playerWord)
 		break
@@ -152,6 +154,8 @@ func checkForSteals(wordToBeChecked):
 	for computerWord in $ComputerWords.get_children():
 		if computerWord is Timer:
 			continue
+		if computerWord.word.length() >= wordToBeChecked.length():
+			continue
 		var computerWordArray = []
 		for character in computerWord.word.to_upper():
 			computerWordArray.append(character)
@@ -163,6 +167,8 @@ func checkForSteals(wordToBeChecked):
 		if tempresult.empty():
 			continue
 		for tile in computerWord.get_children():
+			if tile is Tween:
+				continue
 			tempresult.append(tile)
 		computerWord.get_parent().remove_child(computerWord)
 		break
@@ -209,9 +215,9 @@ func _on_LineEdit_text_entered(new_text):
 		sortedTextString += element
 	print(sortedTextString)
 	if !(scrabbleWords.has(sortedTextString)):
-		print('not a valid word')
+		$LineEdit.invalid()
 	elif !(new_text.to_upper() in scrabbleWords[sortedTextString]):
-		print('not a valid word')
+		$LineEdit.invalid()
 	else:
 		var tilesOnBoard = checkForSteals(new_text)
 		if tilesOnBoard.empty():
@@ -220,19 +226,23 @@ func _on_LineEdit_text_entered(new_text):
 		if tilesOnBoard.empty():
 			tilesOnBoard = checkWordonBoard(new_text)
 		if tilesOnBoard.empty():
+			$LineEdit.unformable()
 			return
 		var newWord = word.instance()
 		newWord.word = new_text
+		newWord.position.x = 960 - (new_text.length() * 25) + 25
+		newWord.position.y = 540
 		
 		for tile in tilesOnBoard:
 			tile.get_parent().remove_child(tile)
 			$Board.removeTile(tile)
 			$Board.lettersInPlay.remove(tile.tileLetter)
 			newWord.add_child(tile)
-
 		
 		$PlayerWords.add_child(newWord)
-		$PlayerWords.arrangeWords()
+		for tile in tilesOnBoard:
+			print(tile.tileLetter, ": ", tile.position, " is relative, ", tile.get_global_position(), " is global")
+		#$PlayerWords.arrangeWords()
 		$PlayerWords.addWord(tilesOnBoard)
 		if stolen:
 			$ComputerWords.arrangeWords()
