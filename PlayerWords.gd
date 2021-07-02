@@ -26,13 +26,14 @@ func addWord(tileArray):
 	
 	#arrangeWords()
 		
-
 func arrangeWords():
+	var newScore = 0
 	var startX = 50
 	var currX = 50
 	var currY = 700
 	var tweenArray = []
 	for word in self.get_children():
+		newScore += word.word.length()
 		if word.scale.x > 1 or word.scale.y > 1:
 			var tween = word.get_node("Tween")
 			tween.interpolate_property(word, "scale", word.scale, Vector2(1, 1), animationSpeed, Tween.TRANS_LINEAR, Tween.EASE_IN)
@@ -49,7 +50,7 @@ func arrangeWords():
 		tweenArray.push_front(tween)
 		currX += (word.word.length() * 50) + 70
 		#lastOffset = (word.word.length() * 40) + 60
-	
+	get_node('../PlayerScore').updateScore(newScore)
 	for element in tweenArray:
 		element.start()
 		

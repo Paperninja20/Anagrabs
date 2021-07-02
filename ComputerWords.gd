@@ -40,6 +40,8 @@ func calculatePlays():
 	
 	var tilesInPlay = []
 	for tile in get_node("../Board").get_children():
+		if !(tile is Node2D):
+			continue
 		tilesInPlay.append(tile.tileLetter)
 	
 	if tilesInPlay.empty():
@@ -105,6 +107,8 @@ func makePlay():
 					play.erase(play.find(character), 1)
 					
 				for tile in get_node("../Board").get_children():
+					if !(tile is Node2D):
+						continue
 					if tile.tileLetter in play:
 						play.erase(play.find(tile.tileLetter), 1)
 						tileArray.append(tile)
@@ -147,6 +151,8 @@ func makePlay():
 					play.erase(play.find(character), 1)
 					
 				for tile in get_node("../Board").get_children():
+					if !(tile is Node2D):
+						continue
 					if tile.tileLetter in play:
 						play.erase(play.find(tile.tileLetter), 1)
 						tileArray.append(tile)
@@ -179,6 +185,8 @@ func makePlay():
 				play = possibleTilePlays[rand_range(0, possibleTilePlays.size() - 1)]
 				var copyOfPlay = play
 				for tile in get_node("../Board").get_children():
+					if !(tile is Node2D):
+						continue
 					for character in copyOfPlay:
 						if tile.tileLetter == character:
 							tileArray.append(tile)
@@ -216,7 +224,6 @@ func makePlay():
 	calculatePlays()
 	
 func addWord(tileArray):
-
 	for tile in tileArray:
 		var tween = tile.get_node("Tween")
 
@@ -234,6 +241,7 @@ func addWord(tileArray):
 	get_node("../AnimationTimerComputer").start()
 	
 func arrangeWords():
+	var newScore = 0
 	var startX = 50
 	var currX = 50
 	var currY = 50
@@ -241,6 +249,7 @@ func arrangeWords():
 	for word in self.get_children():
 		if word is Timer:
 			continue
+		newScore += word.word.length()
 		if word.scale.x > 1 or word.scale.y > 1:
 			var tween = word.get_node("Tween")
 			tween.interpolate_property(word, "scale", word.scale, Vector2(1, 1), animationSpeed, Tween.TRANS_LINEAR, Tween.EASE_IN)
@@ -257,6 +266,7 @@ func arrangeWords():
 		tweenArray.push_front(tween)
 		currX += (word.word.length() * 50) + 70
 	
+	get_node('../OppScore').updateScore(newScore)
 	for element in tweenArray:
 		element.start()
 	

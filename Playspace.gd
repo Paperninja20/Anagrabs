@@ -21,7 +21,7 @@ func _ready():
 	var json_result = JSON.parse(json)
 	file.close()
 	scrabbleWords = json_result.get_result()
-	
+	$PlayerScore.left = false
 	randomize()
 	pass # Replace with function body.
 
@@ -36,7 +36,10 @@ func _on_PluckTileTimer_timeout():
 		return
 	var newTile = tile.instance()
 	newTile.tileLetter = pluckLetter()
-	if !($Board.placeTile(newTile)):
+	newTile.position = Vector2(960, 420)
+	newTile.scale = Vector2(0.25, 0.25)
+	var tileCoords = $Board.placeTile(newTile)
+	if !(tileCoords):
 		var firstKey
 		var count = 1
 		for key in $Board.tileSlots:
@@ -44,23 +47,26 @@ func _on_PluckTileTimer_timeout():
 				count += 1
 				continue
 			firstKey = key
-			if currentOverrideTile < 6:
+			if currentOverrideTile < 8:
 				currentOverrideTile += 1
 			else:
 				currentOverrideTile = 1
 			break
-		var replaceLetter = $Board.tileSlots[firstKey].tileLetter
-		$Board.tileSlots[firstKey].get_parent().remove_child($Board.tileSlots[firstKey])
-		$WordBag.letterBag.append(replaceLetter)
-		$Board.tileSlots[firstKey] = null
-		$Board.placeTile(newTile)
+		$Board.replaceTile(firstKey, newTile)
 	else:
 		currentOverrideTile = 1
-	$Board.lettersInPlay.append(newTile.tileLetter)
-	#print($Board.lettersInPlay)
-	$Board.add_child(newTile)
+		$Board.lettersInPlay.append(newTile.tileLetter)
+		#print($Board.lettersInPlay)
+		$Board.add_child(newTile)
+		var tween = newTile.get_node("Tween")
+		tween.interpolate_property(newTile, "position", Vector2(960, 420), tileCoords, 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
+		tween.interpolate_property(newTile, "scale", Vector2(0.25, 0.25), Vector2(0.5, 0.5), 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
+		tween.start()
+		$WordBag.updateTileCount(-1)
 	var lettersOut = []
 	for tile in $Board.get_children():
+		if !(tile is Node2D):
+			continue
 		lettersOut.append(tile.tileLetter)
 	for word in $PlayerWords.get_children():
 		word.calculateNextPlays(lettersOut, scrabbleWords)
@@ -92,6 +98,8 @@ func checkWordonBoard(word):
 		else:
 			wordDict[character] += 1
 	for tile in $Board.get_children():
+		if !(tile is Node2D):
+			continue
 		if wordDict.has(tile.tileLetter):
 			if wordDict[tile.tileLetter] > 0:
 				wordDict[tile.tileLetter] -= 1
@@ -240,8 +248,6 @@ func _on_LineEdit_text_entered(new_text):
 			newWord.add_child(tile)
 		
 		$PlayerWords.add_child(newWord)
-		for tile in tilesOnBoard:
-			print(tile.tileLetter, ": ", tile.position, " is relative, ", tile.get_global_position(), " is global")
 		#$PlayerWords.arrangeWords()
 		$PlayerWords.addWord(tilesOnBoard)
 		if stolen:

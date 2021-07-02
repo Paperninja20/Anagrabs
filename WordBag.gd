@@ -33,7 +33,7 @@ var letterBag = []
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-
+var tileCount = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -42,10 +42,13 @@ func _ready():
 		while count < letters[letter]:
 			letterBag.append(letter)
 			count += 1
-	
+	tileCount = letterBag.size()
+	$TileCount.text = str(tileCount)
 	pass # Replace with function body.
 
-
+func updateTileCount(number):
+	tileCount += number
+	$TileCount.text = str(tileCount)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
