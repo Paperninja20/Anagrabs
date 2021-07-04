@@ -1,0 +1,87 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Assets/Instruction Bold.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://DifficultySelection.gd" type="Script" id=2]
+[ext_resource path="res://Back.gd" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 82
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 82
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 100
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 50
+font_data = ExtResource( 1 )
+
+[node name="Options" type="Node2D"]
+
+[node name="Difficulty" type="Label" parent="."]
+margin_left = 80.0
+margin_top = 225.0
+margin_right = 608.0
+margin_bottom = 335.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.788235, 0.631373, 0.494118, 1 )
+text = "DIFFICULTY:"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DifficultySelection" type="Label" parent="Difficulty"]
+margin_left = 550.0
+margin_right = 742.0
+margin_bottom = 110.0
+mouse_filter = 1
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.788235, 0.631373, 0.494118, 1 )
+text = "EASY"
+align = 1
+valign = 1
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Options" type="Label" parent="."]
+margin_left = 755.0
+margin_top = 50.0
+margin_right = 1166.0
+margin_bottom = 319.0
+grow_horizontal = 2
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.788235, 0.631373, 0.494118, 1 )
+text = "OPTIONS
+"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Back" type="Label" parent="."]
+margin_left = 12.4726
+margin_right = 131.473
+margin_bottom = 67.0
+mouse_filter = 1
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 0.788235, 0.631373, 0.494118, 1 )
+text = "BACK"
+align = 1
+valign = 1
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="mouse_entered" from="Difficulty/DifficultySelection" to="Difficulty/DifficultySelection" method="_on_DifficultySelection_mouse_entered"]
+[connection signal="mouse_exited" from="Difficulty/DifficultySelection" to="Difficulty/DifficultySelection" method="_on_DifficultySelection_mouse_exited"]
+[connection signal="mouse_entered" from="Back" to="Back" method="_on_Back_mouse_entered"]
+[connection signal="mouse_exited" from="Back" to="Back" method="_on_Back_mouse_exited"]

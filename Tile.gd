@@ -4,7 +4,7 @@ extends Node2D
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-var tileLetter = 'A'
+export var tileLetter = 'A'
 var mouseHover = false
 var dragging = false
 var offsetX
@@ -41,8 +41,6 @@ func _on_Area2D_mouse_entered():
 func _on_Area2D_mouse_exited():
 	if !(Input.is_action_pressed("MouseClick")):
 		mouseHover = false
-
-
 
 
 func _on_Tween_tween_all_completed():

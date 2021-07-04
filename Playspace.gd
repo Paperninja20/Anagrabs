@@ -32,7 +32,7 @@ func _ready():
 
 func _on_PluckTileTimer_timeout():
 	if $WordBag.letterBag.empty():
-		print("no more tiles!")
+		gameOver()
 		return
 	var newTile = tile.instance()
 	newTile.tileLetter = pluckLetter()
@@ -258,3 +258,11 @@ func _on_LineEdit_text_entered(new_text):
 		
 	pass # Replace with function body.
 
+func gameOver():
+	if $PlayerScore.tileCount > $OppScore.tileCount:
+		Global.winner = 'P'
+	elif $OppScore.tileCount > $PlayerScore.tileCount:
+		Global.winner = 'O'
+	else:
+		Global.winner = 'T'
+	get_tree().change_scene("res://GameOver.tscn")

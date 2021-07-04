@@ -29,16 +29,22 @@ size = 32
 font_data = ExtResource( 8 )
 
 [sub_resource type="DynamicFont" id=5]
-size = 90
+size = 75
 font_data = ExtResource( 8 )
 
 [node name="Playspace" type="Node2D"]
 script = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Backdrop" type="Sprite" parent="."]
 position = Vector2( 994.19, 559.068 )
 scale = Vector2( 1.1938, 1.1938 )
 texture = ExtResource( 7 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="OppScore" parent="." instance=ExtResource( 10 )]
 margin_left = 668.0
@@ -79,6 +85,7 @@ placeholder_alpha = 0.429
 caret_blink = true
 script = ExtResource( 11 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -90,10 +97,16 @@ one_shot = true
 position = Vector2( 958, 438 )
 scale = Vector2( 0.45, 0.45 )
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Bag" type="Sprite" parent="WordBag"]
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="TileCount" type="Label" parent="WordBag"]
 margin_left = -46.3079
@@ -107,14 +120,21 @@ text = "60"
 align = 1
 valign = 1
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
 [node name="Board" type="Node2D" parent="."]
 script = ExtResource( 4 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="ComputerWords" type="Node2D" parent="."]
 script = ExtResource( 6 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="CalculationTimer" type="Timer" parent="ComputerWords"]
 wait_time = 4.0
@@ -122,9 +142,12 @@ autostart = true
 
 [node name="PlayerWords" type="Node2D" parent="."]
 script = ExtResource( 5 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="PluckTileTimer" type="Timer" parent="."]
-wait_time = 3.0
+wait_time = 2.0
 autostart = true
 
 [node name="AnimationTimer" type="Timer" parent="."]

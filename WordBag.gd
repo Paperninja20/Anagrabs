@@ -1,6 +1,8 @@
 extends Node2D
 
-var letters = {
+#144 tiles
+
+"""var letters = {
 		'A': 13,
 		'B': 3, 
 		'C': 3,
@@ -27,7 +29,36 @@ var letters = {
 		'X': 2,
 		'Y': 3,
 		'Z': 2
-	}
+	}"""
+	
+var letters = {
+		'A': 7,
+		'B': 2, 
+		'C': 2,
+		'D': 3,
+		'E': 9,
+		'F': 3,
+		'G': 2,
+		'H': 2,
+		'I': 6,
+		'J': 1,
+		'K': 1,
+		'L': 3,
+		'M': 2,
+		'N': 4,
+		'O': 6,
+		'P': 2,
+		'Q': 1,
+		'R': 5,
+		'S': 3,
+		'T': 5,
+		'U': 3,
+		'V': 2,
+		'W': 2,
+		'X': 1,
+		'Y': 2,
+		'Z': 1
+	}	
 	
 var letterBag = []
 # Declare member variables here. Examples:
