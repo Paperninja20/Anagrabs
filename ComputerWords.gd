@@ -15,6 +15,12 @@ var currentY = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():	
 	randomize()
+	if Global.difficulty == 1:
+		$CalculationTimer.wait_time = 4
+	elif Global.difficulty == 2:
+		$CalculationTimer.wait_time = 3
+	else:
+		$CalculationTimer.wait_time = 2
 	pass # Replace with function body.
 
 
@@ -24,9 +30,10 @@ func _ready():
 
 
 func _on_Timer_timeout():
-	var diceRoll = randi()%3 + 1
+	var dice = 3
+	var diceRoll = randi()%dice + 1
 	print(diceRoll)
-	if diceRoll == 3:
+	if diceRoll == 1:
 		makePlay()
 	pass # Replace with function body.
 
@@ -85,12 +92,24 @@ func makePlay():
 	var tileArray = []
 	var tileArraySorted = []
 	var stolen = false
-	var weightedDice = [1,2,2,3,3,3,3,3,3,3]
-	var playType = weightedDice[rand_range(0, weightedDice.size() - 1)]
-	
+	var easyWeightedDice = [1,2,2,3,3,3,3,3,3,3]
+	var mediumWeightedDice = [1,1,2,2,2,3,3,3,3,3]
+	var hardWeightedDice = [1,1,1,2,2,2,3,3,3,3]
+	var playType
+	if Global.difficulty == 1:
+		playType = easyWeightedDice[rand_range(0, easyWeightedDice.size() - 1)]
+	elif Global.difficulty == 2:
+		playType = mediumWeightedDice[rand_range(0, mediumWeightedDice.size() - 1)]
+	else:
+		playType = hardWeightedDice[rand_range(0, hardWeightedDice.size() - 1)]
+	if possibleStealPlays.empty() and possibleTransformPlays.empty():
+		playType = 3
+	elif possibleStealPlays.empty():
+		playType = randi()%2 + 2
+		
 	match playType:
 		1:
-			print('stealing')
+			print("stealing")
 			if !possibleStealPlays.empty():
 				stolen = true
 				play = possibleStealPlays.keys()[rand_range(0, possibleStealPlays.size() - 1)]
@@ -135,9 +154,8 @@ func makePlay():
 	
 		
 		2:
-			print('transforming')
+			print("transforming")
 			if !possibleTransformPlays.empty():
-				
 				play = possibleTransformPlays.keys()[rand_range(0, possibleTransformPlays.size() - 1)]
 				var copyOfPlay = play
 				possibleTransformPlays[play].get_parent().remove_child(possibleTransformPlays[play])
@@ -179,9 +197,8 @@ func makePlay():
 		
 		
 		3:
-			print('normal')
+			print("normal")
 			if !possibleTilePlays.empty():
-				
 				play = possibleTilePlays[rand_range(0, possibleTilePlays.size() - 1)]
 				var copyOfPlay = play
 				for tile in get_node("../Board").get_children():
@@ -213,9 +230,8 @@ func makePlay():
 			else:
 				return
 		
+	print(newWord.word, " is play") 
 		
-	
-	print(newWord.word, " is play")
 	add_child(newWord)
 	arrangeWords()
 	addWord(tileArraySorted)

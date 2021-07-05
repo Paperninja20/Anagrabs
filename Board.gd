@@ -45,7 +45,7 @@ func placeTile(tile):
 	
 	return false
 	
-func replaceTile(firstKey, newTile):
+func replaceTile(firstKey, newTile, scrabbleWords):
 	var replaceTile = tileSlots[firstKey]
 	var replaceLetter = replaceTile.tileLetter
 	var replaceTween = replaceTile.get_node("Tween")
@@ -65,6 +65,19 @@ func replaceTile(firstKey, newTile):
 	tween.interpolate_property(newTile, "position", Vector2(960, 420), Vector2(firstKey[0], firstKey[1]), 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
 	tween.interpolate_property(newTile, "scale", Vector2(0.25, 0.25), Vector2(0.5, 0.5), 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
 	tween.start()
+	var lettersOut = []
+	for tile in get_children():
+		if !(tile is Node2D):
+			continue
+		lettersOut.append(tile.tileLetter)
+	for word in get_node("../PlayerWords").get_children():
+		word.calculateNextPlays(lettersOut, scrabbleWords)
+	for word in get_node("../ComputerWords").get_children():
+		if word is Timer:
+			continue
+		word.calculateNextPlays(lettersOut, scrabbleWords)
+	
+	get_node("../ComputerWords").calculatePlays()
 	#var timer = Timer.new()
 	#add_child(timer)
 	#timer.wait_time = 0

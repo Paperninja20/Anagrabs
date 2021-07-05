@@ -7,9 +7,12 @@ extends Label
 var hovering = false
 
 # Called when the node enters the scene tree for the first time.
-func _process(delta):
-	if Input.is_action_just_pressed("MouseClick") and hovering:
-		get_tree().change_scene("res://Table.tscn")
+func _input(event):
+	if event is InputEventMouseButton and hovering:
+		if event.is_pressed():
+			get_tree().change_scene("res://Table.tscn")
+			hovering = false
+			set("custom_colors/font_color", Color("#c9a17e"))
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -10,12 +10,13 @@ var hovering = false
 func _ready():
 	pass # Replace with function body.
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	if Input.is_action_just_pressed("MouseClick") and hovering:
-		get_tree().call_group("MenuGroup", "show")
-	get_parent().queue_free()
+func _input(event):
+	if event is InputEventMouseButton and hovering:
+		if event.is_pressed():
+			get_tree().call_group("MenuGroup", "show")
+			get_parent().visible = false
+			hovering = false
+			set("custom_colors/font_color", Color("#c9a17e"))
 
 
 func _on_Back_mouse_entered():

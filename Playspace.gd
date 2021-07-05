@@ -52,7 +52,7 @@ func _on_PluckTileTimer_timeout():
 			else:
 				currentOverrideTile = 1
 			break
-		$Board.replaceTile(firstKey, newTile)
+		$Board.replaceTile(firstKey, newTile, scrabbleWords)
 	else:
 		currentOverrideTile = 1
 		$Board.lettersInPlay.append(newTile.tileLetter)
@@ -63,19 +63,19 @@ func _on_PluckTileTimer_timeout():
 		tween.interpolate_property(newTile, "scale", Vector2(0.25, 0.25), Vector2(0.5, 0.5), 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
 		tween.start()
 		$WordBag.updateTileCount(-1)
-	var lettersOut = []
-	for tile in $Board.get_children():
-		if !(tile is Node2D):
-			continue
-		lettersOut.append(tile.tileLetter)
-	for word in $PlayerWords.get_children():
-		word.calculateNextPlays(lettersOut, scrabbleWords)
-	for word in $ComputerWords.get_children():
-		if word is Timer:
-			continue
-		word.calculateNextPlays(lettersOut, scrabbleWords)
-	
-	$ComputerWords.calculatePlays()
+		var lettersOut = []
+		for tile in $Board.get_children():
+			if !(tile is Node2D):
+				continue
+			lettersOut.append(tile.tileLetter)
+		for word in $PlayerWords.get_children():
+			word.calculateNextPlays(lettersOut, scrabbleWords)
+		for word in $ComputerWords.get_children():
+			if word is Timer:
+				continue
+			word.calculateNextPlays(lettersOut, scrabbleWords)
+		
+		$ComputerWords.calculatePlays()
 	
 	pass # Replace with function body.
 	
@@ -248,6 +248,9 @@ func _on_LineEdit_text_entered(new_text):
 			newWord.add_child(tile)
 		
 		$PlayerWords.add_child(newWord)
+		for word in $PlayerWords.get_children():
+			word.calculateNextPlays($Board.lettersInPlay, scrabbleWords)
+		$ComputerWords.calculatePlays()
 		#$PlayerWords.arrangeWords()
 		$PlayerWords.addWord(tilesOnBoard)
 		if stolen:
