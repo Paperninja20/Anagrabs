@@ -16,11 +16,13 @@ var currentY = 0
 func _ready():	
 	randomize()
 	if Global.difficulty == 1:
-		$CalculationTimer.wait_time = 4
+		$CalculationTimer.wait_time = 5
 	elif Global.difficulty == 2:
+		$CalculationTimer.wait_time = 4
+	elif Global.difficulty == 3:
 		$CalculationTimer.wait_time = 3
 	else:
-		$CalculationTimer.wait_time = 2
+		$CalculationTimer.wait_time = 1
 	pass # Replace with function body.
 
 
@@ -30,9 +32,14 @@ func _ready():
 
 
 func _on_Timer_timeout():
-	var dice = 3
+	var dice
+	if Global.difficulty < 3:
+		dice = 4
+	elif Global.difficulty == 3:
+		dice = 3
+	else:
+		dice = 2
 	var diceRoll = randi()%dice + 1
-	print(diceRoll)
 	if diceRoll == 1:
 		makePlay()
 	pass # Replace with function body.
@@ -109,7 +116,7 @@ func makePlay():
 		
 	match playType:
 		1:
-			print("stealing")
+			#print("stealing")
 			if !possibleStealPlays.empty():
 				stolen = true
 				play = possibleStealPlays.keys()[rand_range(0, possibleStealPlays.size() - 1)]
@@ -154,7 +161,7 @@ func makePlay():
 	
 		
 		2:
-			print("transforming")
+			#print("transforming")
 			if !possibleTransformPlays.empty():
 				play = possibleTransformPlays.keys()[rand_range(0, possibleTransformPlays.size() - 1)]
 				var copyOfPlay = play
@@ -197,7 +204,7 @@ func makePlay():
 		
 		
 		3:
-			print("normal")
+			#print("normal")
 			if !possibleTilePlays.empty():
 				play = possibleTilePlays[rand_range(0, possibleTilePlays.size() - 1)]
 				var copyOfPlay = play

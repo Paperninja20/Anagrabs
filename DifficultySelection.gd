@@ -16,7 +16,7 @@ func _ready():
 func _input(event):
 	if event is InputEventMouseButton and hovering:
 		if event.is_pressed():
-			if Global.difficulty == 3:
+			if Global.difficulty == 4:
 				Global.difficulty = 1
 			else:
 				Global.difficulty += 1
@@ -28,8 +28,10 @@ func updateText():
 		text = "EASY"
 	elif Global.difficulty == 2:
 		text = "MEDIUM"
-	else:
+	elif Global.difficulty == 3:
 		text = "HARD"
+	else:
+		text = "GIGAHARD"
 
 func _on_DifficultySelection_mouse_entered():
 	set("custom_colors/font_color", Color("#f8e1b8"))

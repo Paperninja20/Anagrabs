@@ -37,7 +37,7 @@ func _ready():
 func _on_TileTimer_timeout():
 	for child in get_children():
 		if child is Node2D:
-			if child.position.y > 1080:
+			if child.position.y > 1199:
 				child.queue_free()
 	var diceRoll = randi()%3
 	var randomX = rand_range(25, 1895)
@@ -55,6 +55,6 @@ func _on_TileTimer_timeout():
 	newTile.position = Vector2(randomX, 0)
 	add_child(newTile)
 	var tween = newTile.get_node("Tween")
-	tween.interpolate_property(newTile, "position", newTile.position, Vector2(randomX, 1081), 5, Tween.TRANS_LINEAR)
+	tween.interpolate_property(newTile, "position", newTile.position, Vector2(randomX, 1200), 6, Tween.TRANS_LINEAR)
 	tween.start()
 	pass # Replace with function body.
