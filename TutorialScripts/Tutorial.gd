@@ -70,7 +70,7 @@ func _input(event):
 				yield(get_tree().create_timer(5), "timeout")
 				$TutorialBubble.moveInOut()
 				yield(get_tree().create_timer(0.5), "timeout")
-				$TutorialBubble.text = "Look! The word \"what\" can be formed from the tiles on board. Type it into the text box and hit enter to claim it."
+				$TutorialBubble.text = "Look! The word \"what\" can be formed from the tiles on board. Type it into the text box and hit enter to claim it. Words must be at least 4 letters long."
 				$LineEdit.set("custom_colors/font_color_undeditable", Color("#910000"))
 				$LineEdit.editable = true
 				
@@ -101,7 +101,7 @@ func _input(event):
 				$ComputerWords.makePlay()
 				$TutorialBubble.moveInOut()
 				yield(get_tree().create_timer(0.5), "timeout")
-				$TutorialBubble.text = "Words can be stolen in the same manner. Your opponent just stole your word by turning \"Wheat\" into \"Weather!\" Now they have 6 points and you have 0!"
+				$TutorialBubble.text = "Words can be stolen in the same manner. Your opponent just stole your word by turning \"Wheat\" into \"Weather!\" Now they have 7 points and you have 0!"
 				yield(get_tree().create_timer(3), "timeout")
 				$ClickPrompt.visible = true
 				canClick = true
