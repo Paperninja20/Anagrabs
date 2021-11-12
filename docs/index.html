@@ -137,7 +137,13 @@
 	<script type='text/javascript' src='.js'></script>
 	<script type='text/javascript'>//<![CDATA[
 
-		var engine = new Engine;
+		const engine = new Engine($GODOT_CONFIG);
+		engine.startGame({
+			/* optional override configuration, eg. */
+			// unloadAfterInit: false,
+			// canvasResizePolicy: 0,
+			// ...
+		});
 		var setStatusMode;
 		var setStatusNotice;
 
