@@ -1,0 +1,73 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Singleplayer.gd" type="Script" id=1]
+[ext_resource path="res://Multiplayer.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Instruction Bold.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Back.gd" type="Script" id=4]
+
+[sub_resource type="DynamicFont" id=3]
+size = 82
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 50
+font_data = ExtResource( 3 )
+
+[node name="PlayOptions" type="Node2D"]
+
+[node name="Singleplayer" type="Label" parent="."]
+margin_left = 657.837
+margin_top = 311.062
+margin_right = 1233.84
+margin_bottom = 421.062
+grow_horizontal = 2
+mouse_filter = 1
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.788235, 0.631373, 0.494118, 1 )
+text = "Singleplayer"
+align = 1
+valign = 1
+uppercase = true
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Multiplayer" type="Label" parent="."]
+margin_left = 683.956
+margin_top = 578.047
+margin_right = 1211.96
+margin_bottom = 688.047
+grow_horizontal = 2
+mouse_filter = 1
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.788235, 0.631373, 0.494118, 1 )
+text = "Multiplayer"
+align = 1
+valign = 1
+uppercase = true
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Back" type="Label" parent="."]
+margin_left = 12.4726
+margin_right = 131.473
+margin_bottom = 67.0
+mouse_filter = 1
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 0.788235, 0.631373, 0.494118, 1 )
+text = "BACK"
+align = 1
+valign = 1
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="mouse_entered" from="Singleplayer" to="Singleplayer" method="_on_Singleplayer_mouse_entered"]
+[connection signal="mouse_exited" from="Singleplayer" to="Singleplayer" method="_on_Singleplayer_mouse_exited"]
+[connection signal="mouse_entered" from="Multiplayer" to="Multiplayer" method="_on_Multiplayer_mouse_entered"]
+[connection signal="mouse_exited" from="Multiplayer" to="Multiplayer" method="_on_Multiplayer_mouse_exited"]
+[connection signal="mouse_entered" from="Back" to="Back" method="_on_Back_mouse_entered"]
+[connection signal="mouse_exited" from="Back" to="Back" method="_on_Back_mouse_exited"]

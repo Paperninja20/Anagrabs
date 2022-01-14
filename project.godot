@@ -22,6 +22,7 @@ config/icon="res://Assets/TileIcon.png"
 [autoload]
 
 Global="*res://Global.gd"
+Server="*res://Server.gd"
 
 [display]
 

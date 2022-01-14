@@ -10,7 +10,12 @@ var hovering = false
 func _input(event):
 	if event is InputEventMouseButton and hovering:
 		if event.is_pressed():
-			get_tree().change_scene("res://Table.tscn")
+			get_tree().call_group("MenuGroup", "hide")
+			get_parent().get_node("PlayOptions").visible = true
+#			get_parent().get_node("PlayOptions").get_node("Singleplayer").visible = true
+#			get_parent().get_node("PlayOptions").get_node("Multiplayer").visible = true
+			
+			hide()
 			hovering = false
 			set("custom_colors/font_color", Color("#c9a17e"))
 	
@@ -27,3 +32,6 @@ func _on_Play_mouse_entered():
 func _on_Play_mouse_exited():
 	set("custom_colors/font_color", Color("#c9a17e"))
 	hovering = false
+	
+func hide():
+	visible = false

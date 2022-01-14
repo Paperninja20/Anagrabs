@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/WordFormed_Insert 5.wav-67a1a6da22abbfcfa87d3dc56c4744cb.sample"
+
+[deps]
+
+source_file="res://Assets/WordFormed_Insert 5.wav"
+dest_files=[ "res://.import/WordFormed_Insert 5.wav-67a1a6da22abbfcfa87d3dc56c4744cb.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

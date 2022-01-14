@@ -13,7 +13,7 @@ func _ready():
 	for child in get_children():
 		if child is Sprite or child is Timer or child is Label:
 			continue
-		if child.name == "OptionsScene":
+		if child.name == "OptionsScene" or child.name == "PlayOptions":
 			continue
 		var tween = child.get_node("Tween")
 		tween.interpolate_property(child, "position", child.position, child.position + Vector2(0, 300), 0.12, Tween.TRANS_LINEAR, Tween.EASE_OUT)

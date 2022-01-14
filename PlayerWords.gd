@@ -8,7 +8,9 @@ var currentX = 0
 var currentY = 0
 var animationSpeed = 0.5
 
+
 func addWord(tileArray):
+	get_node("../WordForm").play()
 	for tile in tileArray:
 		var tween = tile.get_node("Tween")
 
@@ -32,7 +34,13 @@ func arrangeWords():
 	var currX = 50
 	var currY = 700
 	var tweenArray = []
-	for word in self.get_children():
+	
+	for word in get_children():
+		if word.get_child_count() <= 1:
+			remove_child(word)
+			word.queue_free()	
+			
+	for word in get_children():
 		newScore += word.word.length()
 		if word.scale.x > 1 or word.scale.y > 1:
 			var tween = word.get_node("Tween")

@@ -29,3 +29,7 @@ func _on_Pause_timeout():
 	selecting_enabled = true
 	text = ""
 	pass # Replace with function body.
+
+func _on_LineEdit_text_entered(new_text):	
+	Server.sendWord(new_text)
+	

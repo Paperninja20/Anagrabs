@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/TilePlace_Current.wav-ba538d0ebb425b15e43b6b3110845a6b.sample"
+
+[deps]
+
+source_file="res://Assets/TilePlace_Current.wav"
+dest_files=[ "res://.import/TilePlace_Current.wav-ba538d0ebb425b15e43b6b3110845a6b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

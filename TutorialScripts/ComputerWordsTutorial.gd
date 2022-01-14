@@ -231,6 +231,7 @@ func makePlay():
 	calculatePlays()
 	
 func addWord(tileArray):
+	get_node("../WordForm").play()
 	for tile in tileArray:
 		var tween = tile.get_node("Tween")
 

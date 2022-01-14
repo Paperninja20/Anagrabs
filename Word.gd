@@ -42,6 +42,14 @@ func calculateNextPlays(tilesInPlay, scrabbleWords):
 			if not scrabbleWords[stringOfWord][0] in possibleNextPlays:
 				possibleNextPlays += scrabbleWords[stringOfWord]
 		subset = dec2binArray((1<<(tilesInPlay.size() + 1) - 1) - (i + 1), tilesInPlay.size())
+	
+	var i = 0
+	while i < possibleNextPlays.size():
+		if possibleNextPlays[i] == word + 'S':
+			possibleNextPlays.remove(i)
+			continue
+		i += 1
+			
 		
 				
 	#for i in range(tilesOnBoard.size()):

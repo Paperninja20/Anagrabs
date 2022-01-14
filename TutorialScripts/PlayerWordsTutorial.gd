@@ -9,6 +9,7 @@ var currentY = 0
 var animationSpeed = 0.5
 
 func addWord(tileArray):
+	get_node("../WordForm").play()
 	for tile in tileArray:
 		var tween = tile.get_node("Tween")
 

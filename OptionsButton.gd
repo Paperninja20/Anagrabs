@@ -4,7 +4,6 @@ extends Label
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-var tile = preload("res://Tile.tscn")
 var hovering = false
 
 func _ready():

@@ -57,18 +57,22 @@ func _input(event):
 				bagTween.start()
 				
 				$TutorialBubble.moveInOut()
+				$TutorialGuy.moveInOut(false)
 				yield(get_tree().create_timer(0.5), "timeout")
 				$TutorialBubble.text = "Every few seconds, a tile will be plucked from the bag."
 				yield(get_tree().create_timer(6.5), "timeout")
 				$TutorialBubble.moveInOut()
+				$TutorialGuy.moveInOut(false)
 				yield(get_tree().create_timer(0.5), "timeout")
-				$TutorialBubble.text = "They will be placed clockwise and form a circle around the bag."
+				$TutorialBubble.text = "They will be placed clockwise and form a circle around the bag."	
 				yield(get_tree().create_timer(6.5), "timeout")
 				$TutorialBubble.moveInOut()
+				$TutorialGuy.moveInOut(false)
 				yield(get_tree().create_timer(0.5), "timeout")
 				$TutorialBubble.text = "Once there are 8 tiles around the bag, tiles will start to be replaced with new ones."
 				yield(get_tree().create_timer(5), "timeout")
 				$TutorialBubble.moveInOut()
+				$TutorialGuy.moveInOut(false)
 				yield(get_tree().create_timer(0.5), "timeout")
 				$TutorialBubble.text = "Look! The word \"what\" can be formed from the tiles on board. Type it into the text box and hit enter to claim it. Words must be at least 4 letters long."
 				$LineEdit.set("custom_colors/font_color_undeditable", Color("#910000"))
@@ -78,6 +82,7 @@ func _input(event):
 				canClick = false
 				lastPhase = 3
 				$TutorialBubble.moveInOut()
+				$TutorialGuy.moveInOut(true)
 				yield(get_tree().create_timer(0.5), "timeout")
 				$TutorialBubble.text = "As you can see, you now have a score of 4! Your score is the total number of tiles that you own."
 				yield(get_tree().create_timer(3), "timeout")
@@ -89,6 +94,7 @@ func _input(event):
 				canClick = false
 				canPluck = true
 				$TutorialBubble.moveInOut()
+				$TutorialGuy.moveInOut(true)
 				yield(get_tree().create_timer(0.5), "timeout")
 				$TutorialBubble.text = "You can also transform your words by adding letters from the middle of the board to the word to create a longer word or a new anagram of the word! Try transforming \"What\" into \"Wheat!\""
 				$LineEdit.editable = true
@@ -100,6 +106,7 @@ func _input(event):
 				yield(get_tree().create_timer(4), "timeout")
 				$ComputerWords.makePlay()
 				$TutorialBubble.moveInOut()
+				$TutorialGuy.moveInOut(true)
 				yield(get_tree().create_timer(0.5), "timeout")
 				$TutorialBubble.text = "Words can be stolen in the same manner. Your opponent just stole your word by turning \"Wheat\" into \"Weather!\" Now they have 7 points and you have 0!"
 				yield(get_tree().create_timer(3), "timeout")
@@ -111,6 +118,7 @@ func _input(event):
 				canClick = false
 				canPluck = true
 				$TutorialBubble.moveInOut()
+				$TutorialGuy.moveInOut(true)
 				yield(get_tree().create_timer(0.5), "timeout")
 				$TutorialBubble.text = "Don't worry, an opportunity may come where we can steal it back."
 				yield(get_tree().create_timer(3.5), "timeout")
@@ -126,6 +134,7 @@ func _input(event):
 func _on_PluckTileTimer_timeout():
 	if not canPluck:
 		return
+	$TileSound.play()
 	if $WordBag.letterBag.empty():
 		gameOver()
 		return

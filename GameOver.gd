@@ -84,3 +84,4 @@ func tied():
 		tween.interpolate_property(tile, "position", tile.position, tile.position + Vector2(0, rand_range(180, 210)), 0.25, Tween.TRANS_LINEAR, Tween.EASE_OUT)
 		tween.start()
 		yield(get_tree().create_timer(0.10), "timeout")
+

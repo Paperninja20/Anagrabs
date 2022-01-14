@@ -10,6 +10,7 @@ var dragging = false
 var offsetX
 var offsetY
 var globalPos
+var tileID
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Letter.text = tileLetter

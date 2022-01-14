@@ -15,16 +15,6 @@ var currentY = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():	
 	randomize()
-	if Global.difficulty == 1:
-		$CalculationTimer.wait_time = 5
-	elif Global.difficulty == 2:
-		$CalculationTimer.wait_time = 4
-	elif Global.difficulty == 3:
-		$CalculationTimer.wait_time = 3
-	else:
-		$CalculationTimer.wait_time = 1
-	pass # Replace with function body.
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -93,6 +83,10 @@ func calculatePlays():
 	
 	
 func makePlay():
+	while get_parent().playBeingMade:
+		continue
+	get_parent().playBeingMade = true
+	#print("making play")
 	calculatePlays()
 	var newWord
 	var play
@@ -157,6 +151,7 @@ func makePlay():
 					get_node("../Board").lettersInPlay.remove(tile.tileLetter)
 					newWord.add_child(tile)
 			else:
+				get_parent().playBeingMade = false
 				return
 	
 		
@@ -200,6 +195,7 @@ func makePlay():
 					get_node("../Board").lettersInPlay.remove(tile.tileLetter)
 					newWord.add_child(tile)
 			else:
+				get_parent().playBeingMade = false
 				return
 		
 		
@@ -235,6 +231,7 @@ func makePlay():
 					get_node("../Board").lettersInPlay.remove(tile.tileLetter)
 					newWord.add_child(tile)
 			else:
+				get_parent().playBeingMade = false
 				return
 		
 	print(newWord.word, " is play") 
@@ -245,8 +242,10 @@ func makePlay():
 	if stolen:
 		get_node("../PlayerWords").arrangeWords()
 	calculatePlays()
+	get_parent().playBeingMade = false
 	
 func addWord(tileArray):
+	get_node("../WordForm").play()
 	for tile in tileArray:
 		var tween = tile.get_node("Tween")
 
@@ -269,6 +268,14 @@ func arrangeWords():
 	var currX = 50
 	var currY = 50
 	var tweenArray = []
+	
+	for word in get_children():
+		if word is Timer:
+			continue
+		if word.get_child_count() <= 1:
+			remove_child(word)
+			word.queue_free()	
+			
 	for word in self.get_children():
 		if word is Timer:
 			continue

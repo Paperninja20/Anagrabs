@@ -11,6 +11,8 @@ var currX = 640
 var currY = 440
 onready var letters = $WordBag.letters
 var scrabbleWords = {}
+
+var playBeingMade = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
@@ -31,6 +33,7 @@ func _ready():
 #	pass
 
 func _on_PluckTileTimer_timeout():
+	$TileSound.play()
 	if $WordBag.letterBag.empty():
 		gameOver()
 		return
@@ -125,6 +128,8 @@ func checkForTransforms(wordToBeChecked):
 	for playerWord in $PlayerWords.get_children():
 		if playerWord.word.length() >= wordToBeChecked.length():
 			continue
+		if wordToBeChecked == playerWord.word + "s":
+			continue
 		var playerWordArray = []
 		for character in playerWord.word.to_upper():
 			playerWordArray.append(character)
@@ -162,7 +167,10 @@ func checkForSteals(wordToBeChecked):
 	for computerWord in $ComputerWords.get_children():
 		if computerWord is Timer:
 			continue
+		print(computerWord.word, " vs ", wordToBeChecked)
 		if computerWord.word.length() >= wordToBeChecked.length():
+			continue
+		if wordToBeChecked.to_upper() == computerWord.word + "S":
 			continue
 		var computerWordArray = []
 		for character in computerWord.word.to_upper():
@@ -210,6 +218,9 @@ func checkSubarray(subarray, array):
 			
 
 func _on_LineEdit_text_entered(new_text):
+	while playBeingMade:
+		continue
+	playBeingMade = true
 	var stolen = true
 	print(new_text)
 	$LineEdit.text = ''
@@ -235,6 +246,7 @@ func _on_LineEdit_text_entered(new_text):
 			tilesOnBoard = checkWordonBoard(new_text)
 		if tilesOnBoard.empty():
 			$LineEdit.unformable()
+			playBeingMade = false
 			return
 		var newWord = word.instance()
 		newWord.word = new_text
@@ -258,7 +270,7 @@ func _on_LineEdit_text_entered(new_text):
 		#for tile in tilesOnBoard:
 			#print(tile.get_global_position())
 
-		
+	playBeingMade = false
 	pass # Replace with function body.
 
 func gameOver():

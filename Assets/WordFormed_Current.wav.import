@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/WordFormed_Current.wav-454717def467165bc1b89d8d94b7f368.sample"
+
+[deps]
+
+source_file="res://Assets/WordFormed_Current.wav"
+dest_files=[ "res://.import/WordFormed_Current.wav-454717def467165bc1b89d8d94b7f368.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
