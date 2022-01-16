@@ -16,7 +16,6 @@ var currentOverrideTile = 1
 var currX = 640
 var currY = 440
 onready var letters = $WordBag.letters
-var scrabbleWords = {}
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if Global.tutorialPhase == 1:
@@ -28,12 +27,6 @@ func _ready():
 		yield(get_tree().create_timer(3), "timeout")
 		$ClickPrompt.visible = true
 		canClick = true
-	var file = File.new()
-	file.open("res://ScrabbleWords.json", file.READ)
-	var json = file.get_as_text()
-	var json_result = JSON.parse(json)
-	file.close()
-	scrabbleWords = json_result.get_result()
 	$PlayerScore.left = false
 	randomize()
 	pass # Replace with function body.
@@ -165,7 +158,7 @@ func _on_PluckTileTimer_timeout():
 			else:
 				currentOverrideTile = 1
 			break
-		$Board.replaceTile(firstKey, newTile, scrabbleWords)
+		$Board.replaceTile(firstKey, newTile, Global.scrabbleWords)
 	else:
 		currentOverrideTile = 1
 		$Board.lettersInPlay.append(newTile.tileLetter)
@@ -182,11 +175,11 @@ func _on_PluckTileTimer_timeout():
 				continue
 			lettersOut.append(tile.tileLetter)
 		for word in $PlayerWords.get_children():
-			word.calculateNextPlays(lettersOut, scrabbleWords)
+			word.calculateNextPlays(lettersOut, Global.scrabbleWords)
 		for word in $ComputerWords.get_children():
 			if word is Timer:
 				continue
-			word.calculateNextPlays(lettersOut, scrabbleWords)
+			word.calculateNextPlays(lettersOut, Global.scrabbleWords)
 		
 		$ComputerWords.calculatePlays()
 		if tileCount == 4:
@@ -341,9 +334,9 @@ func _on_LineEdit_text_entered(new_text):
 	for element in sortedText:
 		sortedTextString += element
 	print(sortedTextString)
-	if !(scrabbleWords.has(sortedTextString)):
+	if !(Global.scrabbleWords.has(sortedTextString)):
 		$LineEdit.invalid()
-	elif !(new_text.to_upper() in scrabbleWords[sortedTextString]):
+	elif !(new_text.to_upper() in Global.scrabbleWords[sortedTextString]):
 		$LineEdit.invalid()
 	else:
 		var tilesOnBoard = checkForSteals(new_text)
@@ -368,7 +361,7 @@ func _on_LineEdit_text_entered(new_text):
 		
 		$PlayerWords.add_child(newWord)
 		for word in $PlayerWords.get_children():
-			word.calculateNextPlays($Board.lettersInPlay, scrabbleWords)
+			word.calculateNextPlays($Board.lettersInPlay, Global.scrabbleWords)
 		$ComputerWords.calculatePlays()
 		#$PlayerWords.arrangeWords()
 		$PlayerWords.addWord(tilesOnBoard)

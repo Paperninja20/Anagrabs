@@ -163,6 +163,8 @@ func sendWord(word):
 func removeTileFromServerBoard(tileID):
 	rpc_id(1, 'removeTile', tileID)
 # Called when the node enters the scene tree for the first time.
+func reinsertLetterToServerBag(letter):
+	rpc_id(1, 'reinsertLetter', letter.tileLetter, playerNick)
 
 
 remote func gameOver():

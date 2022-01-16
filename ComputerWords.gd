@@ -23,7 +23,9 @@ func _ready():
 
 func _on_Timer_timeout():
 	var dice
-	if Global.difficulty < 3:
+	if Global.difficulty == 1:
+		dice = 6
+	elif Global.difficulty == 2:
 		dice = 4
 	elif Global.difficulty == 3:
 		dice = 3
@@ -39,7 +41,7 @@ func calculatePlays():
 	possibleTilePlays.clear()
 	possibleStealPlays.clear()
 	possibleTransformPlays.clear()
-	var scrabbleWords = get_parent().scrabbleWords
+	var scrabbleWords = Global.scrabbleWords
 	var subset
 	
 	var tilesInPlay = []
@@ -66,8 +68,25 @@ func calculatePlays():
 		for character in wordToCheck:
 			stringOfWord += character
 		if scrabbleWords.has(stringOfWord):
-			if not scrabbleWords[stringOfWord][0] in possibleTilePlays:
-				possibleTilePlays += scrabbleWords[stringOfWord]
+			var wordsToInclude = []
+			match Global.difficulty:
+				1:
+					for option in scrabbleWords[stringOfWord]:
+						if scrabbleWords[stringOfWord][option] > 0 and scrabbleWords[stringOfWord][option] < 10000:
+							wordsToInclude.append(option)
+				2:
+					for option in scrabbleWords[stringOfWord]:
+						if scrabbleWords[stringOfWord][option] > 0 and scrabbleWords[stringOfWord][option] < 25000:
+							wordsToInclude.append(option)
+				3:
+					for option in scrabbleWords[stringOfWord]:
+						if scrabbleWords[stringOfWord][option] > 0:
+							wordsToInclude.append(option)
+				4:
+					pass
+			if wordsToInclude.size() > 0:
+				if not wordsToInclude[0] in possibleTilePlays:
+					possibleTilePlays += wordsToInclude
 	
 		for word in get_node("../PlayerWords").get_children():
 			for possibleWord in word.possibleNextPlays:
@@ -93,9 +112,9 @@ func makePlay():
 	var tileArray = []
 	var tileArraySorted = []
 	var stolen = false
-	var easyWeightedDice = [1,2,2,3,3,3,3,3,3,3]
-	var mediumWeightedDice = [1,1,2,2,2,3,3,3,3,3]
-	var hardWeightedDice = [1,1,1,2,2,2,3,3,3,3]
+	var easyWeightedDice = [1,2,2,3,3,3,3,3,3,3,3,3]
+	var mediumWeightedDice = [1,1,2,2,3,3,3,3,3,3,3,3]
+	var hardWeightedDice = [1,1,1,2,2,2,3,3,3,3,3]
 	var playType
 	if Global.difficulty == 1:
 		playType = easyWeightedDice[rand_range(0, easyWeightedDice.size() - 1)]
@@ -114,7 +133,16 @@ func makePlay():
 			if !possibleStealPlays.empty():
 				stolen = true
 				play = possibleStealPlays.keys()[rand_range(0, possibleStealPlays.size() - 1)]
-				print(play)
+				
+				if Global.difficulty == 1:
+					if possibleStealPlays[play].word.length() > 4:
+						get_parent().playBeingMade = false
+						return
+				elif Global.difficulty == 2:
+					if possibleStealPlays[play].word.length() > 5:
+						get_parent().playBeingMade = false
+						return
+				
 				var copyOfPlay = play
 				possibleStealPlays[play].get_parent().remove_child(possibleStealPlays[play])
 				#instance new word and add it to computerwords as a child
@@ -204,6 +232,16 @@ func makePlay():
 			if !possibleTilePlays.empty():
 				play = possibleTilePlays[rand_range(0, possibleTilePlays.size() - 1)]
 				var copyOfPlay = play
+				
+				if Global.difficulty == 1:
+					if play.length() > 4:
+						get_parent().playBeingMade = false
+						return
+				if Global.difficulty == 2:
+					if play.length() > 5:
+						get_parent().playBeingMade = false
+						return
+						
 				for tile in get_node("../Board").get_children():
 					if !(tile is Node2D):
 						continue

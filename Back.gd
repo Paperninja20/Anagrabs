@@ -13,10 +13,7 @@ func _ready():
 func _input(event):
 	if event is InputEventMouseButton and hovering:
 		if event.is_pressed():
-			get_tree().call_group("MenuGroup", "show")
-			get_parent().visible = false
-			hovering = false
-			set("custom_colors/font_color", Color("#c9a17e"))
+			get_tree().change_scene("res://MainMenu.tscn")
 
 
 func _on_Back_mouse_entered():

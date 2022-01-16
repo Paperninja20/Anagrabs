@@ -39,16 +39,35 @@ func calculateNextPlays(tilesInPlay, scrabbleWords):
 		for character in wordToCheck:
 			stringOfWord += character
 		if scrabbleWords.has(stringOfWord):
-			if not scrabbleWords[stringOfWord][0] in possibleNextPlays:
-				possibleNextPlays += scrabbleWords[stringOfWord]
+			var wordsToInclude = []
+			match Global.difficulty:
+				1:
+					for option in scrabbleWords[stringOfWord]:
+						if scrabbleWords[stringOfWord][option] > 0 and scrabbleWords[stringOfWord][option] < 10000:
+							wordsToInclude.append(option)
+				2:
+					for option in scrabbleWords[stringOfWord]:
+						if scrabbleWords[stringOfWord][option] > 0 and scrabbleWords[stringOfWord][option] < 25000:
+							wordsToInclude.append(option)
+				3:
+					for option in scrabbleWords[stringOfWord]:
+						if scrabbleWords[stringOfWord][option] > 0:
+							wordsToInclude.append(option)
+				4:
+					pass
+					
+			if wordsToInclude.size() != 0:
+				if not wordsToInclude[0] in possibleNextPlays:
+					possibleNextPlays += wordsToInclude
 		subset = dec2binArray((1<<(tilesInPlay.size() + 1) - 1) - (i + 1), tilesInPlay.size())
 	
-	var i = 0
-	while i < possibleNextPlays.size():
-		if possibleNextPlays[i] == word + 'S':
-			possibleNextPlays.remove(i)
-			continue
-		i += 1
+	var toRemove = []
+	for possible in possibleNextPlays:
+		if possible == word + 'S':
+			toRemove.append(possible)
+	
+	for element in toRemove:
+		possibleNextPlays.erase(element)
 			
 		
 				

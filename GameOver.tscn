@@ -1,11 +1,16 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Assets/Backdrop.png" type="Texture" id=1]
 [ext_resource path="res://GameOver.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Instruction Bold.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://PlayAgain.gd" type="Script" id=4]
+[ext_resource path="res://Back.gd" type="Script" id=5]
 
 [sub_resource type="DynamicFont" id=1]
+size = 82
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=2]
 size = 82
 font_data = ExtResource( 3 )
 
@@ -34,5 +39,23 @@ __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
+
+[node name="Back" type="Label" parent="."]
+margin_left = 741.383
+margin_top = 582.705
+margin_right = 1173.38
+margin_bottom = 692.705
+mouse_filter = 1
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.788235, 0.631373, 0.494118, 1 )
+text = "Main Menu"
+align = 1
+valign = 1
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="mouse_entered" from="PlayAgain" to="PlayAgain" method="_on_PlayAgain_mouse_entered"]
 [connection signal="mouse_exited" from="PlayAgain" to="PlayAgain" method="_on_PlayAgain_mouse_exited"]
+[connection signal="mouse_entered" from="Back" to="Back" method="_on_Back_mouse_entered"]
+[connection signal="mouse_exited" from="Back" to="Back" method="_on_Back_mouse_exited"]

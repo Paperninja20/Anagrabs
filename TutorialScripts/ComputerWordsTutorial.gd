@@ -31,7 +31,7 @@ func calculatePlays():
 	possibleTilePlays.clear()
 	possibleStealPlays.clear()
 	possibleTransformPlays.clear()
-	var scrabbleWords = get_parent().scrabbleWords
+	var scrabbleWords = Global.scrabbleWords
 	var subset
 	
 	var tilesInPlay = []
@@ -58,8 +58,25 @@ func calculatePlays():
 		for character in wordToCheck:
 			stringOfWord += character
 		if scrabbleWords.has(stringOfWord):
-			if not scrabbleWords[stringOfWord][0] in possibleTilePlays:
-				possibleTilePlays += scrabbleWords[stringOfWord]
+			var wordsToInclude = []
+			match Global.difficulty:
+				1:
+					for option in scrabbleWords[stringOfWord]:
+						if scrabbleWords[stringOfWord][option] > 0 and scrabbleWords[stringOfWord][option] < 10000:
+							wordsToInclude.append(option)
+				2:
+					for option in scrabbleWords[stringOfWord]:
+						if scrabbleWords[stringOfWord][option] > 0 and scrabbleWords[stringOfWord][option] < 25000:
+							wordsToInclude.append(option)
+				3:
+					for option in scrabbleWords[stringOfWord]:
+						if scrabbleWords[stringOfWord][option] > 0:
+							wordsToInclude.append(option)
+				4:
+					pass
+			if wordsToInclude.size() > 0:
+				if not wordsToInclude[0] in possibleTilePlays:
+					possibleTilePlays += wordsToInclude
 	
 		for word in get_node("../PlayerWords").get_children():
 			for possibleWord in word.possibleNextPlays:

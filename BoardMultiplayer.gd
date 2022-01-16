@@ -49,6 +49,7 @@ func replaceTile(firstKey, newTile):
 	var replaceTile = tileSlots[firstKey]
 	Server.tileDictionary.erase(replaceTile.tileID)
 	Server.removeTileFromServerBoard(replaceTile.tileID)
+	Server.reinsertLetterToServerBag(replaceTile)
 	
 	var replaceLetter = replaceTile.tileLetter
 	var replaceTween = replaceTile.get_node("Tween")
