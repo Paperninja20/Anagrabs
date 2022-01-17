@@ -112,9 +112,9 @@ func makePlay():
 	var tileArray = []
 	var tileArraySorted = []
 	var stolen = false
-	var easyWeightedDice = [1,2,2,3,3,3,3,3,3,3,3,3]
-	var mediumWeightedDice = [1,1,2,2,3,3,3,3,3,3,3,3]
-	var hardWeightedDice = [1,1,1,2,2,2,3,3,3,3,3]
+	var easyWeightedDice = [1,2,2,3,3,3,3,3,3,3,3]
+	var mediumWeightedDice = [1,1,2,2,3,3,3,3,3,3,3]
+	var hardWeightedDice = [1,1,1,2,2,2,3,3,3,3]
 	var playType
 	if Global.difficulty == 1:
 		playType = easyWeightedDice[rand_range(0, easyWeightedDice.size() - 1)]
