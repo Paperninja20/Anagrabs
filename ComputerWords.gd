@@ -15,6 +15,12 @@ var currentY = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():	
 	randomize()
+	if Global.difficulty <= 2:
+		$CalculationTimer.wait_time = 4
+	elif Global.difficulty == 3:
+		$CalculationTimer.wait_time = 3.5
+	else:
+		$CalculationTimer.wait_time = 3
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -24,7 +30,7 @@ func _ready():
 func _on_Timer_timeout():
 	var dice
 	if Global.difficulty == 1:
-		dice = 6
+		dice = 5
 	elif Global.difficulty == 2:
 		dice = 4
 	elif Global.difficulty == 3:
@@ -32,6 +38,7 @@ func _on_Timer_timeout():
 	else:
 		dice = 2
 	var diceRoll = randi()%dice + 1
+	print(diceRoll)
 	if diceRoll == 1:
 		makePlay()
 	pass # Replace with function body.
@@ -113,15 +120,18 @@ func makePlay():
 	var tileArraySorted = []
 	var stolen = false
 	var easyWeightedDice = [1,2,2,3,3,3,3,3,3,3,3]
-	var mediumWeightedDice = [1,1,2,2,3,3,3,3,3,3,3]
-	var hardWeightedDice = [1,1,1,2,2,2,3,3,3,3]
+	var mediumWeightedDice = [1,2,2,3,3,3,3,3,3,3]
+	var hardWeightedDice = [1,1,2,2,2,3,3,3,3,3]
+	var gigaHardWeightedDice = [1,1,1,2,2,2,3,3,3,3]
 	var playType
 	if Global.difficulty == 1:
 		playType = easyWeightedDice[rand_range(0, easyWeightedDice.size() - 1)]
 	elif Global.difficulty == 2:
 		playType = mediumWeightedDice[rand_range(0, mediumWeightedDice.size() - 1)]
+	elif Global.difficulty == 3:
+		playType = hardWeightedDice[rand_range(0, mediumWeightedDice.size() - 1)]
 	else:
-		playType = hardWeightedDice[rand_range(0, hardWeightedDice.size() - 1)]
+		playType = gigaHardWeightedDice[rand_range(0, hardWeightedDice.size() - 1)]
 	if possibleStealPlays.empty() and possibleTransformPlays.empty():
 		playType = 3
 	elif possibleStealPlays.empty():
@@ -129,7 +139,13 @@ func makePlay():
 		
 	match playType:
 		1:
-			#print("stealing")
+			if possibleStealPlays.empty():
+				playType = 2
+				get_parent().playBeingMade = false
+				makePlay()
+				return
+				
+			print("stealing")
 			if !possibleStealPlays.empty():
 				stolen = true
 				play = possibleStealPlays.keys()[rand_range(0, possibleStealPlays.size() - 1)]
@@ -184,7 +200,13 @@ func makePlay():
 	
 		
 		2:
-			#print("transforming")
+			print("transforming")
+			if possibleTransformPlays.empty():
+				playType = 3
+				get_parent().playBeingMade = false
+				makePlay()
+				return
+							
 			if !possibleTransformPlays.empty():
 				play = possibleTransformPlays.keys()[rand_range(0, possibleTransformPlays.size() - 1)]
 				var copyOfPlay = play
@@ -228,7 +250,7 @@ func makePlay():
 		
 		
 		3:
-			#print("normal")
+			print("normal")
 			if !possibleTilePlays.empty():
 				play = possibleTilePlays[rand_range(0, possibleTilePlays.size() - 1)]
 				var copyOfPlay = play
